@@ -8,12 +8,20 @@ const DashboardCard: FC<DashboardCardProps> = ({
   heading,
   amount,
   bottomText,
+  PrimaryIcon,
+  SecondaryIcon,
+  primaryIconColor,
+  secondaryIconColor,
 }) => {
   return (
     <DashboardCardView
       heading={heading}
       amount={amount}
       bottomText={bottomText}
+      PrimaryIcon={PrimaryIcon}
+      SecondaryIcon={SecondaryIcon}
+      primaryIconColor={primaryIconColor}
+      secondaryIconColor={secondaryIconColor}
     />
   );
 };
