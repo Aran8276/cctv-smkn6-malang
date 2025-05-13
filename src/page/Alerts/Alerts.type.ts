@@ -1,3 +1,3 @@
 export interface AlertsViewProps {
-    text: string;
+  text: string;
 }

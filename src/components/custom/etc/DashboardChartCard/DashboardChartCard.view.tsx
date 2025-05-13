@@ -23,7 +23,7 @@ const DashboardChartCardView: React.FC<DashboardChartCardProps> = ({
   chartData,
 }) => {
   return (
-    <Card className="col-span-1 md:col-span-3">
+    <Card className="col-span-full md:col-span-3">
       <CardHeader className="flex justify-between">
         <section className="flex flex-col gap-2">
           <CardTitle>Aktivitas</CardTitle>

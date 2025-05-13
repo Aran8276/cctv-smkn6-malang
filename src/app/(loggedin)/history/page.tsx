@@ -1,4 +1,4 @@
-import History from "@/pages/History/History";
+import History from "@/page/History/History";
 import { memo } from "react";
 
 export default memo(History);

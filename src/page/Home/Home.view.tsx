@@ -14,7 +14,7 @@ const HomeView = () => {
         heading="Selamat Datang John Cena"
         subheading="Pantau area secara real-time dengan deteksi AI."
       />
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <DashboardCard
           heading="Total Siswa Dikenali"
           amount={40689}
@@ -45,7 +45,7 @@ const HomeView = () => {
 
         <DashboardChartCard />
 
-        <div className="flex space-x-12 text-white col-span-3">
+        <div className="flex flex-col space-y-8 md:space-y-0 md:flex-row space-x-12 text-white col-span-full md:col-span-3">
           <section className="relative w-full flex-1/50 h-fit">
             <Image
               className="rounded-xl"
