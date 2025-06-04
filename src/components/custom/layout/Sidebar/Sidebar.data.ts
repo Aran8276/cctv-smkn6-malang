@@ -7,7 +7,63 @@ import {
   Webcam,
 } from "lucide-react";
 
-export const navItems = [
+export const navItemsSecurity = [
+  {
+    title: "Beranda",
+    url: "/",
+    icon: LayoutGrid,
+  },
+  {
+    title: "Pemantauan",
+    url: "/monitoring",
+    icon: Webcam,
+  },
+  {
+    title: "Laporan",
+    url: "/report-list",
+    icon: ClipboardList,
+  },
+  {
+    title: "Riwayat",
+    url: "/history",
+    icon: History,
+  },
+];
+
+export const navItemsAdmin = [
+  {
+    title: "Beranda",
+    url: "/",
+    icon: LayoutGrid,
+  },
+  {
+    title: "Pemantauan",
+    url: "/monitoring",
+    icon: Webcam,
+  },
+  {
+    title: "Data User",
+    url: "/user-data",
+    icon: Webcam,
+  },
+  {
+    title: "Dataset",
+    url: "/dataset",
+    icon: Webcam,
+  },
+  {
+    title: "Laporan",
+    url: "/report-list",
+    icon: ClipboardList,
+  },
+  {
+    title: "Riwayat",
+    url: "/history",
+    icon: History,
+  },
+];
+
+export const navItemsKepsek = [
   {
     title: "Beranda",
     url: "/",

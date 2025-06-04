@@ -1,10 +1,11 @@
 import Header from "@/components/custom/layout/Header";
 import BreadcrumbString from "@/components/custom/layout/BreadcrumbString";
 import ReportListTable from "./Table/ReportListTable";
-import { SearchIcon } from "lucide-react";
+import { Plus, SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { FC } from "react";
 import { ReportListViewProps } from "./ReportList.type";
+import { Button } from "@/components/ui/button";
 
 const ReportListView: FC<ReportListViewProps> = ({ setSearch }) => {
   return (
@@ -18,8 +19,12 @@ const ReportListView: FC<ReportListViewProps> = ({ setSearch }) => {
           id="search"
           type="search"
           placeholder="Cari..."
-          className="w-full rounded-lg bg-background pl-8"
+          className="w-[200px] rounded-lg bg-background pl-8"
         />
+        <Button className="rounded-xl w-[170px]">
+          <Plus />
+          Tambah Laporan
+        </Button>
       </Header>
       <BreadcrumbString value="Beranda/Laporan" />
       <section>
