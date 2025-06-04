@@ -6,6 +6,17 @@ import { Input } from "@/components/ui/input";
 import { FC } from "react";
 import { ReportListViewProps } from "./ReportList.type";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  // DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { Label } from "@/components/ui/label";
 
 const ReportListView: FC<ReportListViewProps> = ({ setSearch }) => {
   return (
@@ -21,10 +32,50 @@ const ReportListView: FC<ReportListViewProps> = ({ setSearch }) => {
           placeholder="Cari..."
           className="w-[200px] rounded-lg bg-background pl-8"
         />
-        <Button className="rounded-xl w-[170px]">
-          <Plus />
-          Tambah Laporan
-        </Button>
+        <Dialog>
+          <form>
+            <DialogTrigger asChild>
+              <Button className="rounded-xl w-[170px]">
+                <Plus />
+                Tambah Laporan
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader className="pb-4">
+                <DialogTitle>Tambah Dataset</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-4">
+                <div className="grid gap-3">
+                  <Label htmlFor="name-1">Nama</Label>
+                  <Input id="name-1" name="name" placeholder="fahminur" />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="name-2">Encoding</Label>
+                  <Input
+                    id="name-2"
+                    name="name"
+                    placeholder="toyotacalya@gmail.com"
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="name-3">Detected Encoding</Label>
+                  <Input id="name-3" name="name" placeholder="placeholder" />
+                </div>
+              </div>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button className="rounded-xl" variant="outline">
+                    Batalkan
+                  </Button>
+                </DialogClose>
+                <Button className="rounded-xl" type="submit">
+                  <Plus />
+                  Tambah Dataset
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </form>
+        </Dialog>
       </Header>
       <BreadcrumbString value="Beranda/Laporan" />
       <section>

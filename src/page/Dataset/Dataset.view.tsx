@@ -32,7 +32,6 @@ const DatasetView: FC<DatasetViewProps> = ({ setSearch }) => {
           placeholder="Cari..."
           className="w-[200px] rounded-lg bg-background pl-8"
         />
-
         <Dialog>
           <form>
             <DialogTrigger asChild>
