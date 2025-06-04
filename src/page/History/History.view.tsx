@@ -18,7 +18,7 @@ const HistoryView: FC<HistoryViewProps> = ({ setSearch }) => {
           id="search"
           type="search"
           placeholder="Cari..."
-          className="w-full rounded-lg bg-background pl-8"
+          className="w-[200px] rounded-lg bg-background pl-8"
         />
       </Header>
       <BreadcrumbString value="Beranda/Riwayat" />

@@ -6,6 +6,16 @@ import { TrendingDown, TrendingUp, TriangleAlert, Users } from "lucide-react";
 import DashboardChartCard from "@/components/custom/etc/DashboardChartCard/DashboardChartCard";
 import Image from "next/image";
 import DashboardClickableCard from "@/components/custom/etc/DashboardClickableCard";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import MonitoringCard from "@/components/custom/etc/MonitoringCard";
+import MonitoringCardTable from "@/components/custom/etc/MonitoringCard/Table/MonitoringCardTable";
+import { Fragment } from "react";
 
 const HomeView = () => {
   return (
@@ -64,10 +74,31 @@ const HomeView = () => {
 
           <section className="flex-1 flex-col space-y-3">
             <DashboardClickableCard type="alert" />
-            <DashboardClickableCard type="camera" cameraName="Camera 1" />
-            <DashboardClickableCard type="camera" cameraName="Camera 2" />
-            <DashboardClickableCard type="camera" cameraName="Camera 3" />
-            <DashboardClickableCard type="camera" cameraName="Camera 4" />
+            {["Camera 1", "Camera 2", "Camera 3", "Camera 4"].map(
+              (item, index) => (
+                <Fragment key={index}>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="cursor-pointer hover:scale-[1.01] transition-all">
+                        <DashboardClickableCard
+                          type="camera"
+                          cameraName={item}
+                        />
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="flex space-y-3 flex-col h-[600px] overflow-y-scroll">
+                      <MonitoringCard cameraName={item} />
+                      <section>
+                        <DialogHeader className="flex flex-col space-y-3">
+                          <DialogTitle>Daftar Laporan</DialogTitle>
+                          <MonitoringCardTable />
+                        </DialogHeader>
+                      </section>
+                    </DialogContent>
+                  </Dialog>
+                </Fragment>
+              )
+            )}
           </section>
         </div>
       </section>
