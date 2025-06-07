@@ -1,14 +1,10 @@
 import * as React from "react";
-import { flexRender } from "@tanstack/react-table";
+import {
+  flexRender,
+  ColumnDef,
+  Table as TanstackTable,
+} from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-// import { ChevronDown } from "lucide-react";
-// import {
-//   DropdownMenu,
-//   DropdownMenuCheckboxItem,
-//   DropdownMenuContent,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
-// import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -17,40 +13,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DatasetTableType } from "./DatasetTable.type";
-import { columns } from "./DatasetTable";
+import { Dataset } from "../Dataset.type";
 
-const DatasetTableView: React.FC<DatasetTableType> = ({ table }) => {
+interface DatasetTableViewProps {
+  table: TanstackTable<Dataset>;
+  columns: ColumnDef<Dataset>[];
+}
+
+const DatasetTableView: React.FC<DatasetTableViewProps> = ({
+  table,
+  columns,
+}) => {
   return (
     <div className="w-full">
-      {/* <div className="pb-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Kolum <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div> */}
       <div className="rounded-md border">
         <Table>
           <TableHeader className="bg-primary">
@@ -90,6 +65,7 @@ const DatasetTableView: React.FC<DatasetTableType> = ({ table }) => {
               ))
             ) : (
               <TableRow>
+                {/* 3. Sekarang `columns.length` akan berfungsi dengan benar */}
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"

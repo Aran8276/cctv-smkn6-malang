@@ -17,18 +17,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { UserDataTableType } from "./UserDataTable.type";
 import { Table as TanstackTable } from "@tanstack/react-table";
 import { User } from "../UserData.type";
 import { ColumnDef } from "@tanstack/react-table";
-import { columns } from "@/page/Dataset/Table/DatasetTable";
+
 
 interface UserDataTableViewProps {
   table: TanstackTable<User>;
   columns: ColumnDef<User>[];
 }
 
-const UserDataTableView: React.FC<UserDataTableType> = ({ table }) => {
+const UserDataTableView: React.FC<UserDataTableViewProps> = ({ table, columns }) => {
   return (
     <div className="w-full">
       {/* <div className="pb-4">
