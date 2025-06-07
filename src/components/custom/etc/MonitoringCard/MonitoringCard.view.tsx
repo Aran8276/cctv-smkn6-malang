@@ -1,6 +1,35 @@
 import React, { FC } from "react";
 import { MonitoringCardProps } from "./MonitoringCard.type";
 import Image from "next/image";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { MoreVertical, Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "@radix-ui/react-select";
+import { Label } from "@/components/ui/label";
 
 const MonitoringCardView: FC<MonitoringCardProps> = ({ cameraName }) => {
   return (
