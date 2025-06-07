@@ -13,82 +13,58 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowDown, MoreVertical } from "lucide-react";
+import {
+  ArrowUpDown,
+  MoreVertical,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { data } from "./UserDataTable.dummy.data";
-import { UserDataTableContext } from "./UserDataTable.context";
 import { User } from "../UserData.type";
 
-export const columns: ColumnDef<User>[] = [
+interface GetColumnsProps {
+  onEdit: (user: User) => void;
+  onDelete: (userId: number) => void;
+}
+
+export const getColumns = ({
+  onEdit,
+  onDelete,
+}: GetColumnsProps): ColumnDef<User>[] => [
   {
     accessorKey: "id",
-    header: ({ column }) => {
-      return (
-        <h2
-          className="pl-4 flex space-x-4 items-center cursor-pointer"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span className="font-light">ID</span>
-          <ArrowDown size={20} />
-        </h2>
-      );
-    },
+    header: "ID",
   },
   {
     accessorKey: "username",
-    header: ({ column }) => {
-      return (
-        <h2
-          className="flex space-x-4 items-center cursor-pointer"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span className="font-light">Username</span>
-          <ArrowDown size={20} />
-        </h2>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Username <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => <div>{row.getValue("username")}</div>,
   },
   {
     accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <h2
-          className="flex space-x-4 items-center cursor-pointer"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span className="font-light">Username</span>
-          <ArrowDown size={20} />
-        </h2>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    header: "Email",
   },
   {
-    accessorKey: "created_at",
-    header: ({ column }) => {
-      return (
-        <h2
-          className="flex space-x-4 items-center cursor-pointer float-end relative left-4"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span className="font-light text-right">Created At</span>
-          <ArrowDown size={20} />
-        </h2>
-      );
-    },
+    accessorKey: "role",
+    header: "Role",
   },
   {
     id: "actions",
-    enableHiding: false,
+    header: "Aksi",
     cell: ({ row }) => {
       const user = row.original;
 
@@ -96,20 +72,23 @@ export const columns: ColumnDef<User>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreVertical />
+              <span className="sr-only">Buka menu</span>
+              <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id.toString())}
-            >
-              Copy payment ID
+            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => onEdit(user)}>
+              <Pencil className="mr-2 h-4 w-4" />
+              Edit
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => onDelete(user.id)}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Hapus
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -117,21 +96,28 @@ export const columns: ColumnDef<User>[] = [
   },
 ];
 
-const UserDataTable = () => {
-  const { search } = React.useContext(UserDataTableContext);
+interface UserDataTableProps {
+  data: User[];
+  onEdit: (user: User) => void;
+  onDelete: (userId: number) => void;
+  search: string;
+}
+
+const UserDataTable: React.FC<UserDataTableProps> = ({ data, onEdit, onDelete, search }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [globalFilter, setGlobalFilter] = React.useState('');
+
+  const columns = React.useMemo(() => getColumns({ onEdit, onDelete }), [onEdit, onDelete]);
 
   const table = useReactTable({
-    data,
+    data, 
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter, 
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -143,12 +129,13 @@ const UserDataTable = () => {
       columnFilters,
       columnVisibility,
       rowSelection,
+      globalFilter,
     },
   });
 
   React.useEffect(() => {
-    table.getColumn("email")?.setFilterValue(search);
-  }, [search, table]);
+    setGlobalFilter(search);
+  }, [search]);
 
   return <UserDataTableView table={table} />;
 };

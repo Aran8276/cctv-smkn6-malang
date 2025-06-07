@@ -17,8 +17,38 @@ import {
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const UserDataView: FC<UserDataViewProps> = ({ setSearch }) => {
+const UserDataView: FC<UserDataViewProps> = ({
+  setSearch,
+  search,
+  table,
+  isDialogOpen,
+  setIsDialogOpen,
+  editingUser,
+  formData,
+  setFormData,
+  handleSubmit,
+  openCreateDialog,
+  openEditDialog,
+  handleDeleteUser,
+  users,
+}) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleRoleChange = (value: string) => {
+    setFormData({ ...formData, role: value });
+  };
+
   return (
     <>
       <Header heading="Data User">
@@ -32,55 +62,95 @@ const UserDataView: FC<UserDataViewProps> = ({ setSearch }) => {
           placeholder="Cari..."
           className="w-[200px] rounded-lg bg-background pl-8"
         />
-
-        <Dialog>
-          <form>
-            <DialogTrigger asChild>
-              <Button className="rounded-xl w-[170px]">
-                <Plus />
-                Tambah User
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader className="pb-4">
-                <DialogTitle>Tambah User</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4">
-                <div className="grid gap-3">
-                  <Label htmlFor="name-1">Nama</Label>
-                  <Input id="name-1" name="name" placeholder="fahminur" />
-                </div>
-                <div className="grid gap-3">
-                  <Label htmlFor="name-2">Encoding</Label>
-                  <Input
-                    id="name-2"
-                    name="name"
-                    placeholder="toyotacalya@gmail.com"
-                  />
-                </div>
-                <div className="grid gap-3">
-                  <Label htmlFor="name-3">Detected Encoding</Label>
-                  <Input id="name-3" name="name" placeholder="placeholder" />
-                </div>
-              </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button className="rounded-xl" variant="outline">
-                    Batalkan
-                  </Button>
-                </DialogClose>
-                <Button className="rounded-xl" type="submit">
-                  <Plus />
-                  Tambah User
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </form>
-        </Dialog>
+        <Button className="rounded-xl" onClick={openCreateDialog}>
+          <Plus className="mr-2 h-4 w-4" />
+          Tambah User
+        </Button>
       </Header>
       <BreadcrumbString value="Beranda/Data User" />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <form onSubmit={handleSubmit}>
+            <DialogHeader className="pb-4">
+              <DialogTitle>
+                {editingUser ? "Edit User" : "Tambah User"}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4">
+              <div className="grid gap-3">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder={editingUser ? "Kosongkan jika tidak diubah" : ""}
+                  required={!editingUser}
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="role">Role</Label>
+                <Select
+                  name="role"
+                  value={formData.role}
+                  onValueChange={handleRoleChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="kepsek">Kepsek</SelectItem>
+                    <SelectItem value="security">Security</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <DialogFooter className="mt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsDialogOpen(false)}
+              >
+                Batalkan
+              </Button>
+              <Button type="submit">
+                {editingUser ? "Simpan Perubahan" : "Tambah User"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
       <section>
-        <UserDataTable />
+        <UserDataTable
+          data={users}
+          onEdit={openEditDialog}
+          onDelete={handleDeleteUser}
+          search={search}
+        />
       </section>
     </>
   );
