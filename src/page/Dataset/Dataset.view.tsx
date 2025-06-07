@@ -9,77 +9,117 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  // DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { Label } from "@/components/ui/label";
 
-const DatasetView: FC<DatasetViewProps> = ({ setSearch }) => {
+const DatasetView: FC<DatasetViewProps> = ({
+  datasets,
+  search,
+  setSearch,
+  isDialogOpen,
+  setIsDialogOpen,
+  editingDataset,
+  formData,
+  setFormData,
+  handleSubmit,
+  openCreateDialog,
+  openEditDialog,
+  handleDeleteDataset,
+}) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   return (
     <>
       <Header heading="Dataset">
-        <div className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground">
-          <SearchIcon className="h-4 w-4" />
+        <div className="relative">
+          <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            id="search"
+            type="search"
+            placeholder="Cari..."
+            className="w-[200px] rounded-lg bg-background pl-8"
+          />
         </div>
-        <Input
-          onChange={(event) => setSearch(event.target.value)}
-          id="search"
-          type="search"
-          placeholder="Cari..."
-          className="w-[200px] rounded-lg bg-background pl-8"
-        />
-        <Dialog>
-          <form>
-            <DialogTrigger asChild>
-              <Button className="rounded-xl w-[170px]">
-                <Plus />
-                Tambah Dataset
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className="rounded-xl w-[170px]" onClick={openCreateDialog}>
+              <Plus /> Tambah Dataset
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <form onSubmit={handleSubmit}>
               <DialogHeader className="pb-4">
-                <DialogTitle>Tambah Dataset</DialogTitle>
+                <DialogTitle>
+                  {editingDataset ? "Edit Dataset" : "Tambah Dataset"}
+                </DialogTitle>
               </DialogHeader>
               <div className="grid gap-4">
                 <div className="grid gap-3">
-                  <Label htmlFor="name-1">Nama</Label>
-                  <Input id="name-1" name="name" placeholder="fahminur" />
-                </div>
-                <div className="grid gap-3">
-                  <Label htmlFor="name-2">Encoding</Label>
+                  <Label htmlFor="name">Nama</Label>
                   <Input
-                    id="name-2"
+                    id="name"
                     name="name"
-                    placeholder="toyotacalya@gmail.com"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="fahminur"
+                    required
                   />
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="name-3">Detected Encoding</Label>
-                  <Input id="name-3" name="name" placeholder="placeholder" />
+                  <Label htmlFor="encoding">Encoding</Label>
+                  <Input
+                    id="encoding"
+                    name="encoding"
+                    value={formData.encoding}
+                    onChange={handleInputChange}
+                    placeholder="Nilai encoding..."
+                    required
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="detected_encoding">Detected Encoding</Label>
+                  <Input
+                    id="detected_encoding"
+                    name="detected_encoding"
+                    value={formData.detected_encoding || ""}
+                    onChange={handleInputChange}
+                    placeholder="Opsional..."
+                  />
                 </div>
               </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button className="rounded-xl" variant="outline">
-                    Batalkan
-                  </Button>
-                </DialogClose>
-                <Button className="rounded-xl" type="submit">
-                  <Plus />
-                  Tambah Dataset
+              <DialogFooter className="mt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsDialogOpen(false)}
+                >
+                  Batalkan
+                </Button>
+                <Button type="submit">
+                  {editingDataset ? "Simpan Perubahan" : "Tambah Dataset"}
                 </Button>
               </DialogFooter>
-            </DialogContent>
-          </form>
+            </form>
+          </DialogContent>
         </Dialog>
       </Header>
       <BreadcrumbString value="Beranda/Dataset" />
-      <section>
-        <DatasetTable />
+      <section className="mt-4">
+        <DatasetTable
+          data={datasets}
+          onEdit={openEditDialog}
+          onDelete={handleDeleteDataset}
+          search={search}
+        />
       </section>
     </>
   );

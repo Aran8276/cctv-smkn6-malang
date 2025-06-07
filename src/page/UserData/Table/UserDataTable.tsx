@@ -13,12 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  MoreVertical,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import { ArrowUpDown, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -103,21 +98,32 @@ interface UserDataTableProps {
   search: string;
 }
 
-const UserDataTable: React.FC<UserDataTableProps> = ({ data, onEdit, onDelete, search }) => {
+const UserDataTable: React.FC<UserDataTableProps> = ({
+  data,
+  onEdit,
+  onDelete,
+  search,
+}) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [globalFilter, setGlobalFilter] = React.useState('');
+  const [globalFilter, setGlobalFilter] = React.useState("");
 
-  const columns = React.useMemo(() => getColumns({ onEdit, onDelete }), [onEdit, onDelete]);
+  const columns = React.useMemo(
+    () => getColumns({ onEdit, onDelete }),
+    [onEdit, onDelete]
+  );
 
   const table = useReactTable({
-    data, 
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter, 
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -137,7 +143,7 @@ const UserDataTable: React.FC<UserDataTableProps> = ({ data, onEdit, onDelete, s
     setGlobalFilter(search);
   }, [search]);
 
-  return <UserDataTableView table={table} />;
+  return <UserDataTableView table={table} columns={columns} />;
 };
 
 export default UserDataTable;
