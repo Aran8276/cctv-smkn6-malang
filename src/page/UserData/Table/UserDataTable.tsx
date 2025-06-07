@@ -23,26 +23,39 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Payment, data } from "./UserDataTable.dummy.data";
+import { data } from "./UserDataTable.dummy.data";
 import { UserDataTableContext } from "./UserDataTable.context";
+import { User } from "../UserData.type";
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: "status",
+    accessorKey: "id",
     header: ({ column }) => {
       return (
         <h2
           className="pl-4 flex space-x-4 items-center cursor-pointer"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <span className="font-light">Status</span>
+          <span className="font-light">ID</span>
           <ArrowDown size={20} />
         </h2>
       );
     },
-    cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("status")}</div>
-    ),
+  },
+  {
+    accessorKey: "username",
+    header: ({ column }) => {
+      return (
+        <h2
+          className="flex space-x-4 items-center cursor-pointer"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span className="font-light">Username</span>
+          <ArrowDown size={20} />
+        </h2>
+      );
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "email",
@@ -52,7 +65,7 @@ export const columns: ColumnDef<Payment>[] = [
           className="flex space-x-4 items-center cursor-pointer"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <span className="font-light">Email</span>
+          <span className="font-light">Username</span>
           <ArrowDown size={20} />
         </h2>
       );
@@ -60,35 +73,24 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "amount",
+    accessorKey: "created_at",
     header: ({ column }) => {
       return (
         <h2
           className="flex space-x-4 items-center cursor-pointer float-end relative left-4"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <span className="font-light text-right">Price</span>
+          <span className="font-light text-right">Created At</span>
           <ArrowDown size={20} />
         </h2>
       );
-    },
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
     },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const user = row.original;
 
       return (
         <DropdownMenu>
@@ -101,7 +103,7 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(user.id.toString())}
             >
               Copy payment ID
             </DropdownMenuItem>

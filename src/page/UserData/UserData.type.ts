@@ -1,5 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
+export interface UserResponse {
+  users: User[];
+}
 
-export interface UserDataViewProps {
-  setSearch: Dispatch<SetStateAction<string>>;
+export interface User {
+  id: number;
+  email: string;
+  username: string;
+  role: string;
+  created_at: Date;
 }

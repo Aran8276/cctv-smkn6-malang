@@ -4,7 +4,7 @@ import { HeaderProps } from "./Header.type";
 const HeaderView: FC<HeaderProps> = ({ heading, subheading, children }) => {
   return (
     <header className="flex space-x-12 items-center pb-8">
-      <section className="flex gap-1 w-auto lg:min-w-[180px] max-w-full flex-col">
+      <section className="flex gap-1 w-auto lg:min-w-[580px] max-w-full flex-col">
         <h3 className="font-semibold text-2xl">{heading}</h3>
         <p className="text-gray-500 text-sm">{subheading}</p>
       </section>
