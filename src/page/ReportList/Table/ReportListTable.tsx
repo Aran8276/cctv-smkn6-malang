@@ -1,140 +1,90 @@
 "use client";
 
-import ReportListTableView from "./ReportListTable.view";
 import * as React from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
+  useReactTable,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
-import { ArrowDown, MoreVertical } from "lucide-react";
+import { MoreVertical, Pencil, Trash2, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Payment, data } from "./ReportListTable.dummy.data";
-import { ReportListTableContext } from "./ReportListTable.context";
+import { ReportList } from "../ReportList.type";
+import ReportListTableView from "./ReportListTable.view";
+interface GetColumnsProps {
+  onEdit: (reportlist: ReportList) => void;
+  onDelete: (faceId: string) => void;
+}
 
-export const columns: ColumnDef<Payment>[] = [
+export const getColumns = ({
+  onEdit,
+  onDelete,
+}: GetColumnsProps): ColumnDef<ReportList>[] => [
   {
-    id: "select",
-    header: ({ table }) => (
-      <div className="pl-3 flex items-center">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="pl-3">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
+    accessorKey: "report_id",
+    header: "ID Laporan",
   },
   {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return (
-        <h2
-          className="flex space-x-4 items-center cursor-pointer"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span className="font-light">Status</span>
-          <ArrowDown size={20} />
-        </h2>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+    accessorKey: "subject",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Subjek <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
     ),
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <h2
-          className="flex space-x-4 items-center cursor-pointer"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span className="font-light">Email</span>
-          <ArrowDown size={20} />
-        </h2>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    accessorKey: "content",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Konten <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
   },
   {
-    accessorKey: "amount",
-    header: ({ column }) => {
-      return (
-        <h2
-          className="flex space-x-4 items-center cursor-pointer float-end relative left-4"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span className="font-light text-right">Price</span>
-          <ArrowDown size={20} />
-        </h2>
-      );
-    },
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
+    accessorKey: "created_at",
+    header: "Dibuat Pada",
+    cell: ({ row }) =>
+      new Date(row.getValue("created_at")).toLocaleDateString("id-ID"),
   },
   {
     id: "actions",
-    enableHiding: false,
+    header: "Aksi",
     cell: ({ row }) => {
-      const payment = row.original;
-
+      const reportlist = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreVertical />
+              <span className="sr-only">Buka menu</span>
+              <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
+            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => onEdit(reportlist)}>
+              <Pencil className="mr-2 h-4 w-4" /> Edit
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => onDelete(reportlist.report_id.toString())}
+            >
+              <Trash2 className="mr-2 h-4 w-4" /> Hapus
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -142,40 +92,41 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-const ReportListTable = () => {
-  const { search } = React.useContext(ReportListTableContext);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+interface ReportListTableProps {
+  data: ReportList[];
+  onEdit: (reportlist: ReportList) => void;
+  onDelete: (faceId: string) => void;
+  search: string;
+}
+
+const ReportListTable: React.FC<ReportListTableProps> = ({
+  data,
+  onEdit,
+  onDelete,
+  search,
+}) => {
+  const [globalFilter, setGlobalFilter] = React.useState("");
+  const columns = React.useMemo(
+    () => getColumns({ onEdit, onDelete }),
+    [onEdit, onDelete]
   );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    state: { globalFilter },
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
   });
 
   React.useEffect(() => {
-    table.getColumn("email")?.setFilterValue(search);
-  }, [search, table]);
+    setGlobalFilter(search);
+  }, [search]);
 
-  return <ReportListTableView table={table} />;
+  return <ReportListTableView table={table} columns={columns} />;
 };
 
 export default ReportListTable;

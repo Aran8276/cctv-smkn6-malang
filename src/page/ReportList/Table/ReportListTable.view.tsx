@@ -1,14 +1,10 @@
 import * as React from "react";
-import { flexRender } from "@tanstack/react-table";
+import {
+  flexRender,
+  ColumnDef,
+  Table as TanstackTable,
+} from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-// import { ChevronDown } from "lucide-react";
-// import {
-//   DropdownMenu,
-//   DropdownMenuCheckboxItem,
-//   DropdownMenuContent,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
-// import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -17,40 +13,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ReportListTableType } from "./ReportListTable.type";
-import { columns } from "./ReportListTable";
+import { ReportList } from "../ReportList.type";
 
-const ReportListTableView: React.FC<ReportListTableType> = ({ table }) => {
+interface ReportListTableViewProps {
+  table: TanstackTable<ReportList>;
+  columns: ColumnDef<ReportList>[];
+}
+
+const ReportListTableView: React.FC<ReportListTableViewProps> = ({
+  table,
+  columns,
+}) => {
   return (
     <div className="w-full">
-      {/* <div className="pb-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Kolum <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div> */}
       <div className="rounded-md border">
         <Table>
           <TableHeader className="bg-primary">
@@ -90,6 +65,7 @@ const ReportListTableView: React.FC<ReportListTableType> = ({ table }) => {
               ))
             ) : (
               <TableRow>
+                {/* 3. Sekarang `columns.length` akan berfungsi dengan benar */}
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"
@@ -101,11 +77,7 @@ const ReportListTableView: React.FC<ReportListTableType> = ({ table }) => {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} dari{" "}
-          {table.getFilteredRowModel().rows.length} baris yang dipilih.
-        </div>
+      <div className="flex items-center justify-start space-x-2 py-4">
         <div className="space-x-2">
           <Button
             variant="outline"

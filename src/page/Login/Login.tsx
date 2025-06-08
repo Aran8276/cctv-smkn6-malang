@@ -18,7 +18,8 @@ export default function Login() {
         .data;
 
       if (res.user) {
-        alert("Login sukses (edit nti pakai modal layak)");
+        // alert("Login sukses (edit nti pakai modal layak)");
+        localStorage.setItem("saved-role", res.user.role);
         location.replace("/");
       }
     } catch (error) {

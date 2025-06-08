@@ -54,7 +54,11 @@ export default function Monitoring() {
         alert("Delete CCTV Success " + JSON.stringify(res.cctv));
         fetchCCTVS();
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
+    }
   };
 
   useEffect(() => {

@@ -3,15 +3,17 @@
 import React, { useEffect, useState } from "react";
 import DatasetView from "./Dataset.view";
 import { DatasetTableContext } from "./Table/DatasetTable.context";
-import { Dataset, DatasetFormData } from "./Dataset.type";
+import { Dataset as DataSetType, DatasetFormData } from "./Dataset.type";
 import { client } from "@/utils/client";
 
 export default function Dataset() {
-  const [datasets, setDatasets] = useState<Dataset[]>([]);
+  const [datasets, setDatasets] = useState<DataSetType[]>([]);
   const [search, setSearch] = useState("");
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingDataset, setEditingDataset] = useState<Dataset | null>(null);
+  const [editingDataset, setEditingDataset] = useState<DataSetType | null>(
+    null
+  );
   const [formData, setFormData] = useState<DatasetFormData>({
     name: "",
     encoding: "",
@@ -89,7 +91,7 @@ export default function Dataset() {
     setIsDialogOpen(true);
   };
 
-  const openEditDialog = (dataset: Dataset) => {
+  const openEditDialog = (dataset: DataSetType) => {
     setEditingDataset(dataset);
     setFormData({
       name: dataset.name,

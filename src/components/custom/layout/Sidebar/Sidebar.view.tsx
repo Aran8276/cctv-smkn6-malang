@@ -17,7 +17,13 @@ import { Bird } from "lucide-react";
 import Link from "next/link";
 import { NavUser } from "./sub/NavUser";
 
-const SidebarView: FC<SidebarProps> = ({ text, pathName, navItems }) => {
+const SidebarView: FC<SidebarProps> = ({
+  text,
+  pathName,
+  navItems,
+  user,
+  handleLogout,
+}) => {
   return (
     <Sidebar>
       <SidebarHeader className="px-4">
@@ -102,10 +108,11 @@ const SidebarView: FC<SidebarProps> = ({ text, pathName, navItems }) => {
         </SidebarGroup>
         <div className="px-4">
           <NavUser
+            handleLogout={handleLogout}
             user={{
-              name: "User",
-              email: "@kepalasekolah",
-              avatar: "/avatars/shadcn.jpg",
+              name: user?.username || "-",
+              email: user?.email || "-",
+              avatar: "-",
             }}
           />
         </div>
