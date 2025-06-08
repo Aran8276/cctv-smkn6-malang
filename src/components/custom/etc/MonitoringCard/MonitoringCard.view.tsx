@@ -22,20 +22,9 @@ const MonitoringCardView: FC<MonitoringCardViewProps> = ({
       {/* The Video Player */}
       <div className="player-wrapper w-full h-full">
         {isClient && (
-          <ReactPlayer
-            className="react-player rounded-xl overflow-hidden"
-            url={hlsStreamUrl}
-            playing={true}
-            controls={true}
-            muted={true}
-            width="100%"
-            height="100%"
-            config={{
-              file: {
-                hlsOptions: {},
-              },
-            }}
-            light={false}
+          <iframe
+            src={hlsStreamUrl}
+            className="w-full h-full rounded-xl overflow-hidden"
           />
         )}
       </div>
