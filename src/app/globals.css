@@ -129,6 +129,14 @@
   }
 }
 
+thead > tr:hover {
+  @apply bg-primary;
+}
+
+tbody > tr:hover {
+  @apply bg-muted;
+}
+
 .b {
   @apply border-2 border-red-500;
 }

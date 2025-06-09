@@ -1,6 +1,6 @@
 "use client";
 
-import Home from "@/pages/Home/Home";
+import Home from "@/page/Home/Home";
 import { memo } from "react";
 
 export default memo(Home);

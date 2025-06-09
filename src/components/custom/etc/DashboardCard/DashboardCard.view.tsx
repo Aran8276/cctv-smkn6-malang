@@ -12,7 +12,7 @@ const DashboardCardView: FC<DashboardCardProps> = ({
   secondaryIconColor,
 }) => {
   return (
-    <Card>
+    <Card className="col-span-full lg:col-span-1">
       <CardContent className="flex items-center justify-between">
         <section className="flex space-y-4 flex-col">
           <p>{heading}</p>
