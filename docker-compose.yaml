@@ -1,0 +1,17 @@
+# frontend 5500
+# streamer 8083
+
+services:
+  frontend:
+    network_mode: host
+    build: ./frontend
+    ports:
+      - 5500:5500
+  # streamer:
+  #   network_mode: host
+  #   build: ./streamer
+  #   # ports:
+  #   #   - "8083:8083"
+  #   #   - 5050:5050
+  #   #   - 3478:3478
+  #   #   - 50000-50100:50000-50100/udp
