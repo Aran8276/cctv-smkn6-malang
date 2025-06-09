@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import UserDataView from "./UserData.view";
 import { UserDataTableContext } from "./Table/UserDataTable.context";
 import { User, UserFormData } from "./UserData.type";
-import { AxiosError } from "axios";
 import { client } from "@/utils/client";
 
 export default function UserData() {

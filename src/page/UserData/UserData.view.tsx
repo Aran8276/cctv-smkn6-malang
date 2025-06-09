@@ -13,9 +13,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -28,7 +26,6 @@ import {
 const UserDataView: FC<UserDataViewProps> = ({
   setSearch,
   search,
-  table,
   isDialogOpen,
   setIsDialogOpen,
   editingUser,

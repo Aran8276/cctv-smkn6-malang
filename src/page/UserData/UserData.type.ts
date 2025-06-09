@@ -1,4 +1,4 @@
-import { Table } from "@tanstack/react-table";
+import { Dispatch, SetStateAction } from "react";
 
 export interface User {
   id: number;
@@ -15,7 +15,9 @@ export interface UserFormData {
   role: string;
 }
 export interface UserDataViewProps {
-  table: Table<User>;
+  users: User[];
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
   isDialogOpen: boolean;
   setIsDialogOpen: (isOpen: boolean) => void;
   editingUser: User | null;
@@ -23,4 +25,6 @@ export interface UserDataViewProps {
   setFormData: (data: UserFormData) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   openCreateDialog: () => void;
+  openEditDialog: (user: User) => void;
+  handleDeleteUser: (userId: number) => Promise<void>;
 }

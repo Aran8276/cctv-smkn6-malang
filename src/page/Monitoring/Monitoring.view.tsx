@@ -45,6 +45,8 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const MonitoringView: FC<MonitoringViewProps> = ({
+  cctvActiveData,
+  setCctvActiveId,
   cctvs,
   postCCTV,
   deleteCCTV,
@@ -120,16 +122,29 @@ const MonitoringView: FC<MonitoringViewProps> = ({
           cctvs.map((item, index) => (
             <div className="relative" key={index}>
               <Dialog>
-                <DialogTrigger asChild>
+                <DialogTrigger
+                  onClick={() => setCctvActiveId(item.cctv_id)}
+                  asChild
+                >
                   <div className="cursor-pointer hover:scale-[1.01] transition-all">
                     <MonitoringCard key={index} cameraName={item.location} />
                   </div>
                 </DialogTrigger>
                 <DialogContent className="flex space-y-3 flex-col h-[600px] overflow-y-scroll">
-                  <MonitoringCard key={index} cameraName={item.location} />
+                  <div className="h-full">
+                    {cctvActiveData ? (
+                      <MonitoringCard
+                        rstpUrl={cctvActiveData?.rtsp}
+                        key={index}
+                        cameraName={item.cctv_id}
+                      />
+                    ) : (
+                      <p>Peringatan: RSTP tidak valid</p>
+                    )}
+                  </div>
                   <section>
                     <DialogHeader className="flex flex-col space-y-3">
-                      <DialogTitle>Daftar Laporan</DialogTitle>
+                      <DialogTitle> </DialogTitle>
                       <MonitoringCardTable />
                     </DialogHeader>
                   </section>

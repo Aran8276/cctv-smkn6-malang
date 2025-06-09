@@ -8,3 +8,11 @@ export const client = axios.create({
   },
   withCredentials: true,
 });
+
+export const rtspClient = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_RSTP_SERVER,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
