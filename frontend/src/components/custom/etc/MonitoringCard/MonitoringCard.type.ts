@@ -1,6 +1,7 @@
 export interface MonitoringCardProps {
+  playerRef?: React.RefObject<HTMLVideoElement | null>;
   cameraName: string;
-  rstpUrl?: string;
+  hlsStreamUrl?: string;
   date?: string;
 }
 
