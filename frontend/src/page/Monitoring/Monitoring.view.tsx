@@ -134,7 +134,7 @@ const MonitoringView: FC<MonitoringViewProps> = ({
                   <div className="h-full">
                     {cctvActiveData ? (
                       <MonitoringCard
-                        hlsStreamUrl={cctvActiveData?.rtsp}
+                        mjpegStreamUrl={cctvActiveData?.rtsp}
                         key={index}
                         cameraName={item.cctv_id}
                       />

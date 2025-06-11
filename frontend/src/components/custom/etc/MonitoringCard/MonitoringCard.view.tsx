@@ -1,30 +1,24 @@
 import { Webcam } from "lucide-react";
 
-import React, { FC, RefObject } from "react";
-import ReactHlsPlayer from "react-hls-player";
+import React, { FC } from "react";
 import { MonitoringCardProps } from "./MonitoringCard.type";
 
 const MonitoringCardView: FC<MonitoringCardProps> = ({
   cameraName,
-  hlsStreamUrl,
-  playerRef,
+  mjpegStreamUrl,
 }) => {
   return (
     <div className="relative w-full text-white h-[350px] bg-black rounded-xl">
       <div className="player-wrapper w-full h-full">
-        {hlsStreamUrl ? (
-          <ReactHlsPlayer
-            playerRef={playerRef as RefObject<HTMLVideoElement>}
-            src={hlsStreamUrl}
+        {mjpegStreamUrl ? (
+          <iframe
+            src={mjpegStreamUrl}
             className="w-full h-full rounded-xl overflow-hidden"
-            autoPlay
-            muted
-            controls
-          />
+          ></iframe>
         ) : (
           <div className="flex flex-col justify-center w-full h-full items-center rounded-xl overflow-hidden">
             <Webcam className="size-[150px] opacity-50" />
-            <p className="mt-4 text-gray-400">No video stream available</p>
+            <p className="mt-4 text-gray-400">Video Stream</p>
           </div>
         )}
       </div>
